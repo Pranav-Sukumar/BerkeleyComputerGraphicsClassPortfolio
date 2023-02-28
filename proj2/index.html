@@ -1,7 +1,683 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Project 2 here
-	</body>
-</html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Project 2: MeshEdit</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="3a51100d-430c-4cec-89a7-8bf0249ce14e" class="page sans"><header><img class="page-cover-image" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_2.48.34_PM.png" style="object-position:center 50%"/><h1 class="page-title">Project 2: MeshEdit</h1></header><div class="page-body"><h2 id="353cd2ef-e181-4e1a-97d9-9a601e81c0c9" class="">Ashwat Chidambaram, Pranav Sukumar - CS 284A (Spring 2023)</h2><h1 id="7af3fe0e-ef3c-405f-8d00-30f0697a66da" class="">Project Overview</h1><p id="cce35580-6a81-4933-92f9-4df7ca7dbaef" class="">In this project, we learned about the core aspects of geometric modeling and worked on implementing functionality to compute and render various objects.</p><p id="157c77d8-3b97-4368-a3c2-10c274a62eb5" class="">In Section 1, our main goal was to implement Bezier curves and surfaces. For task 1, we used various anchor points in order to evaluate a 2D Bezier curve using de Casteljau’s algorithm. For task 2, we built off of this concept and took it a step further by evaluating 3D Bezier surfaces by using the separable 1D de Casteljau algorithm.</p><p id="c2cb1ad2-2a0d-401b-8ece-732053170d26" class="">In Section 2, we moved onto the bigger picture of triangle meshes and worked with the core data structures of half-edges, edges, vertices, and faces. For task 3, we implemented area-weighted vertex normals which are used to improve and even out the shading across our geometric model without appearing discrete and tessellated. For task 4 and task 5, we implemented the core edge flip and split functions respectively, which are useful for modifying the individual triangles within our geometric model. Finally, for task 6, we used the previous tasks to implement loop subdivision for mesh upsampling, which essentially allows us to create and subdivide more fine-grained triangles within our existing geometric model, in order to make it appear much more smooth, detailed, and seamless as the number of triangles increases while their size decreases.</p><p id="89c95c94-8768-4de8-8909-dd64593dc6e6" class="">Through working on this assignment, we both were able to better understand how the various concepts we learned in class can be used in real-world applications through a hands-on project. In particular, by drawing out diagrams to understand how functions such as edge flip or split change relationships between edges, half-edges, vertices, and faces, we got a deeper understanding of these topics. It was surprising to us just how many things can be achieved with such elegant algorithms, and was really cool that we were able to successfully implement all these algorithms cleanly and accurately!</p><p id="e77c94cd-424c-4a1b-9503-5ab0a82a99e8" class="">
+</p><hr id="4dd2cb94-44b1-4057-98a6-b51fa3363dc4"/><h1 id="c64bc0a5-7763-4be7-9685-5f28a8182313" class=""><strong><strong>Section I: Bezier Curves and Surfaces</strong></strong></h1><h2 id="8f9522ae-9a30-4085-a2a7-d2869e1b28ca" class=""><strong><strong>Part 1: Bezier Curves with 1D de Casteljau Subdivision</strong></strong></h2><h3 id="fdee5139-7758-4d7c-b077-13b6fae865b7" class="">De Casteljau&#x27;s algorithm and how we implemented it in order to evaluate Bezier curves</h3><p id="88ee1384-c4cb-48b0-be48-103948c79390" class="">De Casteljau’s algorithm is a recursive algorithm that is designed to evaluate Bezier curves. It does this by recursively breaking up various control points along a Bezier curve into smaller segments, and then performing linear interpolations between them. We implemented this algorithm by iterating over the input set of 2D points (<code>std::vector&lt;Vector2D&gt; const &amp;points</code>), and for each consecutive pair of points we applied the following formula:</p><figure id="6230c10f-b3ea-4874-9aea-5c0aa0ad4cfb" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msubsup><mi>p</mi><mi>i</mi><mtext>′</mtext></msubsup><mo>=</mo><mi>l</mi><mi>e</mi><mi>r</mi><mi>p</mi><mo stretchy="false">(</mo><msub><mi>p</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>p</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mtext>−</mtext><mi>t</mi><mo stretchy="false">)</mo><msub><mi>p</mi><mi>i</mi></msub><mo>+</mo><mi>t</mi><msub><mi>p</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">p_i^′=lerp(p_i,p_{i+1},t)=(1−t)p_i+tp_{i+1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.048892em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8018919999999999em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">′</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1−</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8234109999999999em;vertical-align:-0.208331em;"></span><span class="mord mathnormal">t</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span></span></div></figure><p id="469f4dfd-83a3-4b82-a83b-599812e19920" class="">in order to determine the interpolated point between them. The value for <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathnormal">t</span></span></span></span></span><span>﻿</span></span> comes from an attribute of the <code>BezierCurve</code> class. To generate a point on the curve, we evaluate the algorithm for a specific value of <em>t</em>. So to generate all points on the curve, we evaluate the algorithm for lots of values for <em>t</em>.</p><h3 id="6cdee0e2-7fb3-49d7-acc3-84d361ef08ad" class="">Bezier Curve with 6 points of our choosing</h3><figure id="ba662424-8373-4879-a95d-0538cdec15d6" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled.png"><img style="width:1900px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled.png"/></a></figure><h3 id="e648dbb0-83f2-4538-bba5-a9fb77fa8458" class="">Screenshots of each step / level of the evaluation from the original control points down to the final evaluated point</h3><figure id="5747ff1a-6a65-4422-9b43-0c995c8cd5fe" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%201.png"><img style="width:1904px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%201.png"/></a></figure><figure id="ba4f6f49-9692-4f90-91f6-88d63c173658" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%202.png"><img style="width:1896px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%202.png"/></a></figure><figure id="0aa18931-2f95-4b9e-b4c6-47057cdaa5cb" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%203.png"><img style="width:1896px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%203.png"/></a></figure><figure id="c9248014-5734-4383-be2f-efe1ce98b413" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%204.png"><img style="width:1894px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%204.png"/></a></figure><figure id="3d3ee578-01a5-47eb-bb98-2b4e68186867" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%205.png"><img style="width:1888px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%205.png"/></a></figure><h3 id="a874de4d-83bd-4e84-95c9-d104c155c682" class="">Screenshot of a slightly different Bezier curve by moving the original control points around and modifying the parameter <em>t</em> via mouse scrolling</h3><figure id="256bb5da-1d15-4a3b-82eb-0abc17320b65" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%206.png"><img style="width:1618px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%206.png"/></a></figure><figure id="6bf1b366-fe88-4256-8408-0ab05dc7db41" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%207.png"><img style="width:1762px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%207.png"/></a></figure><p id="427681df-8b59-4fd4-bc48-45a6c03ae67f" class="">
+</p><h2 id="d6f4ca6c-3979-4b7e-8405-522499462496" class=""><strong><strong>Part 2: Bezier Surfaces with Separable 1D de Casteljau</strong></strong></h2><h3 id="2d920566-0028-4a49-8873-37a3845f5ddb" class="">How the de Casteljau algorithm extends to Bezier surfaces, and how we implemented it in order to evaluate Bezier surfaces</h3><p id="a02aa688-29d8-4d51-b1cb-71dfa3ed2c7a" class="">We can extrapolate off our previous approach in order to implement the de Casteljau algorithm for Bezier surfaces as well through two variables <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">u</span></span></span></span></span><span>﻿</span></span> and <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span></span><span>﻿</span></span>. We first iterate over all 3D points to evaluate Bezier curves in <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">u</span></span></span></span></span><span>﻿</span></span> (through our <code>evaluate1D()</code> function which repeatedly calls <code>evaluateStep()</code>), and retrieve a single control point for each curve in <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">u</span></span></span></span></span><span>﻿</span></span>. Then, we connect <em><em><em><em><em><em>these new </em></em></em></em></em></em>points by evaluating the Bezier curve in <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span></span><span>﻿</span></span>, to finally get our ultimate point in <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(u, v)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> that lies on the Bezier surface (through our <code>evaluate()</code> function).</p><h3 id="8db62cbd-a119-4911-aaf1-3d27f5868463" class="">Screenshot of <code>bez/teapot.bez</code> evaluated by our implementation</h3><figure id="d9828066-1f65-4e95-92b0-07486da64ecc" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%208.png"><img style="width:1896px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%208.png"/></a></figure><p id="4d2f5e9a-760f-4987-a046-c66349c116e4" class="">
+</p><p id="77726ccf-76ad-40f5-9a1d-94446a4ae790" class="">
+</p><hr id="ab896083-9b33-4982-b2fa-79b305e477be"/><h1 id="10feec15-c42b-44e7-83b8-21f2b3c0da20" class=""><strong><strong>Section II: Triangle Meshes and Half-Edge Data Structure</strong></strong></h1><h2 id="c99e61fe-7e78-46f4-9e32-aa319b2e0189" class=""><strong><strong>Part 3: Area-Weighted Vertex Normals</strong></strong></h2><h3 id="952d5870-9c4f-4df1-8f91-079c9a3fd0ae" class="">How we implemented the area-weighted vertex normals</h3><p id="8a59ae3c-d60e-4390-8c7b-3fa9b2822569" class="">To implement the area-weighted vertex normals in Part 3, we first decided to define two variables: <code>halfedge_base</code> to store the initial first halfedge and <code>halfedge_traverse</code> to reassign new halfedges as we explore neighboring triangles for the vertex. For each of these triangles, we used a correct mix of <code>next()</code>, <code>vertex()</code>, and <code>twin()</code> functions in order to retrieve all three vertices for each triangle we explored. Then, we computed the area of each triangle by taking the cross product of two vectors among the three vertices, and dividing the norm of this cross product vector by 2. Thereafter, we multiply this area by the face normal of the triangle, and we maintain a running sum of all these <code>Vector3D</code> values for every triangle that shares our original vertex. Finally, we divide the resulting summed <code>Vector3D</code> by its norm to get our output for the area-weighted vertex normal.</p><h3 id="c0541034-04a7-45e8-959a-b211b220092a" class="">Screenshots of <code>dae/teapot.dae</code> comparing teapot shading with and without vertex normals</h3><figure id="af1b2f0f-a95c-4389-a335-ac327409d643" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%209.png"><img style="width:1896px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%209.png"/></a></figure><figure id="27dd564f-741d-4c68-b2fc-63a2089a24cf" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%2010.png"><img style="width:1896px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%2010.png"/></a></figure><p id="c6f24003-a9df-4dcc-948c-4dfb51d22915" class="">
+</p><h2 id="dee172e3-e642-4817-941e-20734303554b" class=""><strong><strong>Part 4: Edge Flip</strong></strong></h2><h3 id="77b547b1-b18f-4237-bd40-b50f584baac9" class="">How we implemented the edge flip operation</h3><p id="ae4f2fbc-4586-4fe1-82d6-10ec68a30f97" class="">We implemented the edge flip operation for Part 4 by first drawing out the two triangles and identifying and labeling edges, half-edges, vertices, and faces. To help map out our logic, we used a helpful diagram linked to on Ed by a fellow student (and displayed below), that showed all of the above edges, half-edges, vertices, and faces labeled both <em><em><em><em><em><em>before</em></em></em></em></em></em> and <em><em><em><em><em>after</em></em></em></em></em> the flip operation, which helped us both in the variable retrieval and variable modification/assignment stages. <div class="indented"><figure id="4aca677f-ee55-4429-a949-339b2689eb19" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_10.19.10_AM.png"><img style="width:1262px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_10.19.10_AM.png"/></a><figcaption><a href="http://15462.courses.cs.cmu.edu/fall2015content/misc/HalfedgeEdgeOpImplementationGuide.pdf">Halfedge Edge Implemention Guide</a>, courtesy of CMU</figcaption></figure></div></p><p id="64374118-bf46-4c8f-ae89-77b64ef622e3" class="">
+</p><p id="ec27e991-5ee4-4ceb-b2a3-dc49428f539d" class="">In the code, our first step was to retrieve all of the variables. Given the input edge e0 to our function, we acquired its half-edge and use that half-edge to acquire all 10 half-edges, 4 vertices, 5 edges, and 2 faces. </p><p id="41fbc23d-dca6-4f04-acf8-63ad42c10af9" class="">Then we had to modify all of those pointers to point to the correct values after the flip. For the half-edges, we used the built-in <code>setNeighbors()</code> function to set the <code>next</code>, <code>twin</code>, <code>vertex</code>, <code>edge</code>, and <code>face</code> values all at once. For the vertices, edges, and faces, we manually reassigned each of their half-edges to the new proper half-edges after the flip. On a final important note, we only did all of the aforementioned steps if the edge <code>e0</code> was <strong>not</strong> on the boundary, else we simply returned the original variable <code>e0</code> back immediately. Even if a pointer did not change after the flip, we still made sure to reassign it so that we could trace our entire logic and ensure we had no small bugs.</p><h3 id="1c1f9365-d2ac-4ac6-a56e-f8fe1d3745ab" class="">Interesting implementation / debugging tricks we used</h3><p id="96f17ddc-c42b-44d4-927b-61a53a4e2666" class="">One debugging trick that we used to verify that the pointers were assigned correctly was to use the GUI as a debugging aid. We used the GUI to flip an edge and then inspect a half-edge from the flip. We used the N button on the keyboard to follow the next pointer to ensure that the next half-edge was set correctly. We also used the T button on the keyboard to ensure that the twin for a half-edge after a flip was set correctly. </p><h3 id="8c2fd937-f8f0-492f-87b3-f3593db63a21" class="">Screenshots of a mesh before and after some edge flips</h3><figure id="6f675602-9b50-4567-8546-08e2e5e322b6" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%2011.png"><img style="width:1896px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%2011.png"/></a><figcaption>Above is a screenshot of teapot.dae before any edge flips.</figcaption></figure><figure id="2c42f0aa-036e-4832-98c5-d4d90e0d2228" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%2012.png"><img style="width:1896px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%2012.png"/></a><figcaption>Above is a screenshot of teapot.dae after some edge flips. Specifically, we flipped all the edges in alternating horizontal “rows” of the teapot.</figcaption></figure><h3 id="7cc1d1f3-3406-4082-b7de-41710fa47aa7" class="">Our Debugging Journey</h3><p id="a2714c76-6c89-43fb-9870-d994afa2a625" class="">We honestly got a bit lucky with our debugging journey as the majority of our logic was correct on our first try (as the diagrams really helped visualize and code our reassignments for half-edges accurately), but one issue we ran into was forgetting to even reassign a lot of the other pointers. We initially only called <code>setNeighbors()</code> on all the previous half-edges, forgetting that we needed to also reassign the <code>-&gt;halfedge()</code> for each of the vertices, edges, and faces. However, using the <code>check_for(...)</code> function as recommended by the spec, we figured out that we were missing these parts to begin with, and thereafter added it into our code to finally make it work perfectly!</p><p id="efd2d854-a746-4bc6-b9a0-9b6dca2ed894" class="">
+</p><h2 id="033ec9ab-f0e8-4865-bf0a-cc2982b8bdec" class=""><strong><strong>Part 5: Edge Split</strong></strong></h2><h3 id="74ff94aa-1241-478c-bce5-72ce7d50c9ef" class="">How we implemented the edge split operation</h3><p id="0197c351-e23a-481b-9187-cc7f5db54fe1" class="">We implemented this task in a similar manner in which we implemented task 4. We first drew out a diagram that showed all of the edges, half-edges, vertices, and faces labeled both <em><em><em><em><em><em>before</em></em></em></em></em></em> and <em><em><em><em><em>after</em></em></em></em></em> the split operation, which helped us both in the variable retrieval and variable modification/assignment stages. In the diagram that we drew, we carefully color-coded it to keep track of which elements would have to be created from scratch, and which elements already existed. In the diagram, any half-edge, edge, vertex, or face written in red indicates that the element had to be created.</p><figure id="108fb479-e7ea-4b76-935d-5c4e77ad1d08" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.01.47_AM.png"><img style="width:1246px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.01.47_AM.png"/></a></figure><p id="648576d4-c822-4a50-a8f6-7edf490636f5" class="">
+</p><p id="6e2802f5-6a6b-4cde-ac76-e857d78df032" class="">In the code, our first step was to retrieve all of the variables. Given the input edge e0 to our function, we acquired its half-edge and use that half-edge to acquire all 10 half-edges, 4 vertices, 5 edges, 2 faces. </p><p id="d9e0e917-e5e5-4703-8365-59d45ece8a81" class="">Then we had to create new elements for the 6 new half-edges, 3 new edges, 2 new faces, and 1 new vertex. We created new HalfedgeIter, EdgeIter, FaceIter, and VertexIter objects. For the EdgeIter and VertexIter objects, we set the isNew instance variable to true for use in Task 6.</p><p id="e0671372-3d9d-4497-a87f-676c91e4fa8d" class="">Then we had to modify all of those pointers to point to the correct values after the flip. For the half-edges, we used the built-in <code>setNeighbors()</code> function to set the <code>next</code>, <code>twin</code>, <code>vertex</code>, <code>edge</code>, and <code>face</code> values all at once. For the vertices, edges, and faces, we manually reassigned each of their half-edges to the new proper half-edges after the flip. On a final important note, we only did all of the aforementioned steps if the edge <code>e0</code> was <strong>not</strong> on the boundary, else we simply returned the original variable <code>e0</code> back immediately. Even if a pointer did not change after the flip, we still made sure to reassign it so that we could trace our entire logic and ensure we had no small bugs.</p><h3 id="2601ec4e-5cc9-4abc-b9ee-cb41ba9f99f3" class="">Interesting implementation / debugging tricks we used</h3><p id="2292fb25-a8f2-4122-89a3-5cf31e6c05f7" class="">One debugging trick that we used to verify that the pointers were assigned correctly was to use the GUI as a debugging aid. We used the GUI to flip an edge and then inspect a half-edge from the flip. We used the N button on the keyboard to follow the next pointer to ensure that the next half-edge was set correctly. We also used the T button on the keyboard to ensure that the twin for a half-edge after a flip was set correctly. </p><h3 id="54a3478b-8027-47ed-aaa2-31a923346fd3" class="">Screenshots of a mesh before and after some edge splits</h3><figure id="ad45f700-4701-4f02-865b-9ed3ff54fcda" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_10.50.48_AM.png"><img style="width:1890px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_10.50.48_AM.png"/></a><figcaption>Above is a screenshot of teapot.dae before any edge splits.</figcaption></figure><p id="71318684-b54b-4fdc-a45e-63a929b23f49" class="">
+</p><figure id="814974c9-672c-4394-9a10-826ea0127d8a" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_10.56.12_AM.png"><img style="width:1890px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_10.56.12_AM.png"/></a><figcaption>Above is a screenshot of teapot.dae after several edge splits.</figcaption></figure><h3 id="805cd91b-e59f-4ff0-9abb-26ab25b4a050" class="">Screenshots of a mesh before and after a combination of both edge splits and edge flips</h3><figure id="2c6bd15f-4602-4d3b-9324-caf7710520b3" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_10.50.48_AM.png"><img style="width:1890px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_10.50.48_AM.png"/></a><figcaption>Above is a screenshot of teapot.dae before any edge splits.</figcaption></figure><p id="7ff1a496-ad58-4880-8e1d-c6bc15c3ec95" class="">
+</p><figure id="81d074db-db39-4f79-86bb-f63a25abefc2" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_10.48.31_AM.png"><img style="width:1890px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_10.48.31_AM.png"/></a><figcaption>Above is a screenshot of teapot.dae after edge flips on edge splits.</figcaption></figure><h3 id="4ca2a051-e99c-49d9-9661-0fde6baa3e10" class="">Our Debugging Journey</h3><p id="c1a7e769-d1fb-45a9-80fe-5a6fd1b14d36" class="">Our code appeared to run perfectly after completing Task 5 since we could split an edge in the GUI and were able to follow resulting half-edges pointers using the N and T keyboard shortcuts. However, after working on Task 6, we noticed a really really small bug in Task 5. There was a typo in one of the face assignments that was resulting in a few missing faces (see broken teapot after upsampling below). We discovered this by reexamining every assignment in Task 5 until the typo caught our eye. </p><figure id="8a3e5fdc-cce7-47f9-8bd0-9bf890a3adaf" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%2013.png"><img style="width:240px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%2013.png"/></a><figcaption>Buggy Task 6 output due to a typo in Task 5</figcaption></figure><p id="7b0798f1-e8a9-46e2-8491-266fce70727b" class="">
+</p><h2 id="9d5b0d5d-687b-4711-b79b-781cfeeca74a" class=""><strong><strong>Part 6: Loop Subdivision for Mesh Upsampling</strong></strong></h2><h3 id="2ccef2ff-e7ad-452d-ae96-dec21db1c376" class="">How we implemented loop subdivision</h3><p id="5121de62-dd98-4bca-8ce1-fa7ffbfd8ab8" class="">We implemented the loop subdivision algorithm by following the pseudocode outlined in the starter code and by following the formulas mentioned on the spec.</p><p id="6fa7411f-f198-4c4e-8343-f39594f5ad43" class="">Loop subdivision allows us to upsample a 3D mesh, similar to how bilinear filtering was used to upsample 2D images in Project 1. Loop subdivision performs 4-1 subdivisions over the entire mesh by splitting all edges, and flipping them back. The algorithm also requires that both the new and old vertices are repositioned accordingly. </p><p id="f0f52b20-b84a-4ec9-878b-3048a3df9e7d" class="">The algorithm can be explained in depth by looking at the code we wrote that was split up into 5 stages:</p><ol type="1" id="d2c864c2-43d7-4ec0-bea2-c680f4c423e7" class="numbered-list" start="1"><li>We first looped over all vertices in the mesh to precompute the eventual new position for all existing vertices. For each vertex that we looped over, we first computed the original_neighbor_position_sum by looping over all neighboring vertices. We then set the current vertex’s precomputed newPosition using the formula in the spec (and in the code block below). We also set the vertex’s isNew attribute to false.</li></ol><pre id="5a664af3-08ad-4bf8-99db-1c48d031f6d3" class="code code-wrap"><code>currVertex-&gt;newPosition = (1 - n * u) * currVertex-&gt;position 
++ u * original_neighbor_position_sum;</code></pre><ol type="1" id="29ef625a-b51d-48e0-b37e-5b4875b64554" class="numbered-list" start="2"><li>We then looped over all edges in the mesh to precompute the eventual new position for all new vertices resulting from an eventual split (note we did not perform the actual split in this step). For each edge that we looped over, we first determined the neighboring A,B,C,D vertices. We then set the current edge’s precomputed newPosition using the formula in the spec (and in the code block below). We also set the edge’s isNew attribute to false.</li></ol><pre id="09a93aa5-a007-47ba-875a-4e67676f9ac9" class="code code-wrap"><code>currEdge-&gt;newPosition = 3.0/8.0 * (A-&gt;position + B-&gt;position) 
++ 1.0/8.0 * (C-&gt;position + D-&gt;position);</code></pre><ol type="1" id="b88b9693-e194-45ae-a264-57d53ca12eac" class="numbered-list" start="3"><li>We then looped over all edges in the mesh to split each one. We ensured we were only splitting edges that were new to prevent infinite looping. The new edges are labeled as new from our code in Task 5.</li></ol><ol type="1" id="b0247486-01fc-4948-909f-7b6148ae93ff" class="numbered-list" start="4"><li>We then looped over all the new edges in the mesh to flip any new edge that connected a new vertex to an old one.</li></ol><ol type="1" id="f838406b-cb65-451d-b101-098463c34127" class="numbered-list" start="5"><li>We finally looped over all vertices in the mesh to assign each vertex its correct position which was precomputed in steps 1 and 2. </li></ol><h3 id="7177c96b-a7dc-4003-a41a-f72975c17aa3" class="">Interesting implementation / debugging tricks we used</h3><p id="e3207350-3bee-4e0e-a681-3c545c9ece5b" class="">We had an issue where all the vertices’ positions were set to (0,0,0) because of a floating point error which resulted in a really strange output (see below). With guidance from a TA in project party, we were able to debug this by putting breakpoints to determine the vertex→newPosition value and saw that it was always 0. We discovered that this was due to integer division, and fixed this by using floats.</p><figure id="ff5814f1-19e2-4315-9cb9-ac2032ec0880" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%2014.png"><img style="width:1890px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Untitled%2014.png"/></a><figcaption>Buggy output due to the fact all vertex positions were set to (0,0,0)</figcaption></figure><h3 id="b6eaf2d1-0007-4949-a751-f48fc0a381e1" class="">Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?</h3><p id="2ed28569-0fe1-4b3e-909a-824dbd05fad9" class="">Sharp corners and edges smoothen out over time and become more rounded and spherical. Below, when we subdivide a sharp cube, the edges become more and more spherical over more subdivision iterations. </p><p id="e1306643-4308-4924-b69d-2474f49eef31" class=""><strong>Smooth edges when subdividing the base cube:</strong></p><figure id="b525eec9-5d83-47f0-b9e3-248471d94b7c" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.43.44_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.43.44_AM.png"/></a><figcaption>Base Cube</figcaption></figure><div id="637b6375-6cfa-44e5-b200-d315355267dd" class="column-list"><div id="21d4ebaa-5aee-48d7-a0dc-4e53742e29d1" style="width:33.333333333333336%" class="column"><figure id="1e5f0ca7-7612-4708-83d7-0574dd14fb4b" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.07_AM.png"><img style="width:192px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.07_AM.png"/></a><figcaption>1 Subdivision Iteration</figcaption></figure></div><div id="dd678b2e-4c8e-405c-985c-98fc0f724ee4" style="width:33.333333333333336%" class="column"><figure id="98e19387-080f-4589-bac4-a9c290cf7717" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.28_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.28_AM.png"/></a><figcaption>2 Subdivision Iterations</figcaption></figure></div><div id="edeb439f-658d-4a1b-87f6-e820f588c56d" style="width:33.33333333333333%" class="column"><figure id="a3ce598e-dfc1-4355-a898-3e27476e10dd" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.44_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.44_AM.png"/></a><figcaption>3 Subdivision Iterations</figcaption></figure></div></div><div id="da95e60e-727e-44b6-8f6f-9922875babce" class="column-list"><div id="24b144bd-982a-46c7-bce0-62e42dcaa0ed" style="width:33.33333333333333%" class="column"><figure id="576819fa-f2da-457b-bcd6-3a6137966fb0" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.09_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.09_AM.png"/></a><figcaption>4 Subdivision Iterations</figcaption></figure></div><div id="5c2363e2-8f66-41d2-a652-4a41fd456339" style="width:33.33333333333334%" class="column"><figure id="0ede188f-20e5-423f-bd12-26f4cacfeb9f" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.17_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.17_AM.png"/></a><figcaption>5 Subdivision Iterations</figcaption></figure></div><div id="d1f2e4d2-f0d0-4c83-8ed3-2860aa33a47c" style="width:33.33333333333333%" class="column"><figure id="83b3b044-dc48-44b4-896d-d5fdacaee18e" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.25_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.25_AM.png"/></a><figcaption>6 Subdivision Iterations</figcaption></figure></div></div><p id="63f4fa1a-6b1e-4e60-b7ca-c9f046e4c70d" class="">If we want the cube to maintain its original sharp structure, we can preprocess it by splitting the edges and flipping them on one face so that there are more edges pointing toward one of the 8 outer vertices on the cube like in the diagram below. Now note that after subdivision, the cube maintains a sharp face and three sharp edges where the preprocessing occurred.</p><figure id="ec4f5372-67db-463e-881c-f8a79369ea87" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.57.58_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.57.58_AM.png"/></a><figcaption>Preprocessed Cube</figcaption></figure><p id="b933f71c-3ab9-4180-a683-005b185b5de7" class="">
+</p><div id="1d4f61d3-6db3-4b90-af9b-5f131435fc79" class="column-list"><div id="699832ec-78d7-4777-9507-626b2fed7b5b" style="width:33.333333333333336%" class="column"><figure id="64729dbf-375b-468a-a592-ccc97921a23a" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.58.47_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.58.47_AM.png"/></a><figcaption>1 Subdivision Iteration</figcaption></figure></div><div id="6fe3aa2d-478f-4fbe-813e-7a2567e6ae03" style="width:33.333333333333336%" class="column"><figure id="a3fb9054-6e0c-42f9-8ef8-1bde4c43b0c9" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.59.05_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.59.05_AM.png"/></a><figcaption>2 Subdivision Iterations</figcaption></figure></div><div id="3bb21da7-0b7b-4f3d-8575-d845cde7a61e" style="width:33.33333333333333%" class="column"><figure id="95199648-c032-4879-9b99-4d9dd7dccc53" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.59.16_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.59.16_AM.png"/></a><figcaption>3 Subdivision Iterations</figcaption></figure></div></div><div id="920fe484-44b3-46c8-8b0b-0ca20bb8bfd5" class="column-list"><div id="2e03bff1-fb94-4954-9236-df290cc58ec4" style="width:33.333333333333336%" class="column"><figure id="763d95dc-69cf-4097-bc66-eae42738aad5" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.59.27_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.59.27_AM.png"/></a><figcaption>4 Subdivision Iterations</figcaption></figure></div><div id="e9bde009-d261-44de-b06b-2642bbbcfbc4" style="width:33.333333333333336%" class="column"><figure id="da5a0fa7-86b4-4ddd-b6ac-c4a3459f1434" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.59.34_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.59.34_AM.png"/></a><figcaption>5 Subdivision Iterations</figcaption></figure></div><div id="bf6addff-a2e9-4edc-96f1-9599a28f64c3" style="width:33.33333333333333%" class="column"><figure id="b534a12d-147a-45ea-a16e-19f0b8c1982b" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.59.55_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.59.55_AM.png"/></a><figcaption>6 Subdivision Iterations</figcaption></figure></div></div><h3 id="59ee4723-80e5-45a6-9912-b63061e0bda7" class="">Load <code>dae/cube.dae</code>. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.</h3><p id="49b9fb16-8029-4d72-8bb1-a6a0e944ad74" class="">When we subdivide the base cube, it becomes asymmetrically shaped over time because of the fact that the position of a new vertex resulting from a split is determined by the edge’s 4 neighbor vertices. Since the cube with no preprocessing only has one diagonal edge per face, this results in an asymmetric location for the new vertex resulting from the splitting.</p><p id="a5623e9d-1774-4308-979d-2b229edfed64" class=""><strong>Asymmetric effects when subdividing the base cube:</strong></p><figure id="4795f565-3726-48a2-a2df-ad14436f5f77" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.43.44_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.43.44_AM.png"/></a><figcaption>Base Cube</figcaption></figure><div id="c6be683c-d40f-47c9-b88c-3e36e6134ee1" class="column-list"><div id="8bf3005b-2232-4607-9941-5e8cf4124fe2" style="width:33.333333333333336%" class="column"><figure id="115f71d4-eda9-4ea1-bc26-758a231e9e8f" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.07_AM.png"><img style="width:192px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.07_AM.png"/></a><figcaption>1 Subdivision Iteration</figcaption></figure></div><div id="a002522f-1709-4543-8c09-94fe47f87dfd" style="width:33.333333333333336%" class="column"><figure id="bd720d66-7a2f-47c2-9694-dab0d56be9f5" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.28_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.28_AM.png"/></a><figcaption>2 Subdivision Iterations</figcaption></figure></div><div id="adcc7b70-382a-4047-a8ec-976450b17516" style="width:33.33333333333333%" class="column"><figure id="f0a51497-d6ba-4454-bd26-edd7e6d6ee3a" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.44_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.44.44_AM.png"/></a><figcaption>3 Subdivision Iterations</figcaption></figure></div></div><div id="98b0b754-53b0-4174-9c53-3c04e8653cd0" class="column-list"><div id="c9e21dad-1687-4298-b7cd-2952e0dfdef3" style="width:33.333333333333336%" class="column"><figure id="1833218c-fac4-4e59-a8d1-79e68c005e5f" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.09_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.09_AM.png"/></a><figcaption>4 Subdivision Iterations</figcaption></figure></div><div id="a3939abb-f3a4-476d-84f2-fd1ea45eef9d" style="width:33.333333333333336%" class="column"><figure id="c6631e7f-c476-4d7f-836b-e0e20bc85d8d" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.17_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.17_AM.png"/></a><figcaption>5 Subdivision Iterations</figcaption></figure></div><div id="b8432664-48ed-472c-ab89-b7f329d2864f" style="width:33.33333333333333%" class="column"><figure id="ed8ab068-df85-4093-9f54-ba4a3b6358db" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.25_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.45.25_AM.png"/></a><figcaption>6 Subdivision Iterations</figcaption></figure></div></div><p id="ee4d03c7-99c3-4d5b-895d-eb0475ffd09a" class="">To fix this we can preprocess the cube by splitting the diagonal edge on each of the 6 faces. Now each face has a vertex that is equidistant from the 4 vertices on the face. This means that the surrounding vertices are more equidistant. When an edge is split, the position of the new vertex is determined by the position of its 4 neighbors, and now that these 4 neighbors are more equidistant, the vertex’s new position is more symmetric. </p><p id="68d44516-e05b-480e-b898-ac991ad56c82" class=""><strong> Symmetric effect when subdividing the preprocessed cube:</strong></p><figure id="a7619cc7-31e9-4c37-a191-78adcb6cbd5b" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.36.38_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.36.38_AM.png"/></a><figcaption>Cube with preprocessing</figcaption></figure><div id="1b49e499-f466-4027-8a44-6475a69bfbfd" class="column-list"><div id="cf566ec2-e059-4262-80cc-83eded58844b" style="width:33.33333333333333%" class="column"><figure id="b0665093-d89c-4d61-bc74-2fcf6d0221f1" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.37.12_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.37.12_AM.png"/></a><figcaption>1 Subdivision Iteration</figcaption></figure></div><div id="5d47d1ae-7abe-4ff4-97ee-73d0bca9fe4f" style="width:33.33333333333333%" class="column"><figure id="e72df623-8ffd-4879-8564-b678958395ed" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.37.36_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.37.36_AM.png"/></a><figcaption>2 Subdivision Iterations</figcaption></figure></div><div id="373cd2ed-89df-444e-8431-7bd6e763d704" style="width:33.33333333333333%" class="column"><figure id="9729fb21-822b-4d5a-91cb-a7dcf0435cea" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.38.12_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.38.12_AM.png"/></a><figcaption>3 Subdivision Iterations</figcaption></figure></div></div><div id="09894742-2d2b-440b-855e-722bda545e45" class="column-list"><div id="34112268-d61d-423f-bc51-c9504c0a975b" style="width:33.333333333333336%" class="column"><figure id="6384664e-1e5b-4efd-9627-2b4024e310b9" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.38.38_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.38.38_AM.png"/></a><figcaption>4 Subdivision Iterations</figcaption></figure></div><div id="5b3f26dc-9f5c-42d2-8840-0d7762fcb9a9" style="width:33.333333333333336%" class="column"><figure id="d7662c6e-bff9-4028-bde9-c3e862c9b3a4" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.38.54_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.38.54_AM.png"/></a><figcaption>5 Subdivision Iterations</figcaption></figure></div><div id="0c217c28-dbdd-4e6f-b984-d8247efd9c31" style="width:33.33333333333333%" class="column"><figure id="d9bf6689-5f6d-40dc-8785-84fcb967a886" class="image"><a href="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.39.21_AM.png"><img style="width:1912px" src="Project%202%20MeshEdit%203a51100d430c4cec89a78bf0249ce14e/Screen_Shot_2023-02-28_at_11.39.21_AM.png"/></a><figcaption>6 Subdivision Iterations</figcaption></figure></div></div><h1 id="07075f09-ff93-4f1d-a99a-fe4b26ff323e" class="">Conclusion</h1><p id="e78fce13-ef23-49a3-a621-551abca52f09" class="">Overall, this was a really intriguing and fun project to work on! We truly learned a lot about coding in C++ and various algorithms used for geometric modeling. It was really satisfying to see the awesome results of our teapots and other objects being rendered on our computers using code, and being able to modify and improve the quality of our renders by different shading and mesh upsampling techniques which produced smooth, seamless, and elegant images!</p><h1 id="254516ed-342b-40a2-bf08-c2e764a5b859" class="">Link to Website</h1><p id="dcfab23a-5e7c-4c62-8355-31f50dc1606a" class=""><a href="https://pranav-sukumar.github.io/BerkeleyComputerGraphicsClassPortfolio/proj2/index.html">https://pranav-sukumar.github.io/BerkeleyComputerGraphicsClassPortfolio/proj2/index.html</a> </p></div></article></body></html>
