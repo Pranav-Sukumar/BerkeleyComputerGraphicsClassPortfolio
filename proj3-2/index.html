@@ -1,7 +1,698 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Project 3-2 here
-	</body>
-</html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Project 3-2: Adding Additional Features to Our Path Tracer</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="9b65f195-d942-4a92-9699-79ea9e20a05d" class="page sans"><header><img class="page-cover-image" src="https://images.unsplash.com/photo-1597848007618-54db4e82fe3a?ixlib=rb-4.0.3&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb" style="object-position:center 50%"/><h1 class="page-title">Project 3-2: Adding <strong>Additional Features to Our Path Tracer</strong></h1></header><div class="page-body"><h2 id="f8217423-5690-4c2b-8bdb-d39b87fce116" class="">Ashwat Chidambaram, Pranav Sukumar - CS 284A (Spring 2023)</h2><h1 id="a3305fc5-1722-48e3-89a5-91136e970ed1" class="">Project Overview</h1><p id="a58140f4-d501-49d9-a9e4-929e38f41ee6" class="">In this second half of our project, we added two new features to our existing path tracer that we built in Project 3-1. In our first feature from Part 2, we implemented the microfacet model, which as described on the website are “isotropic rough conductors that only reflect”. For our second feature for Part 4, we implemented a Depth of Field effect by simulating a thin lens instead of the previous pinhole camera model. We did not encounter too many bugs in this project, but one small issue in part 2 we ran into was numerical imprecision due to division and multiplication by integers which resulted in random black spots in the render. To fix this, we ensured that all of the constants and intermediate variables were stored as double values. </p><p id="00382360-90e5-4d2a-a5f9-fb0329b20022" class="">
+</p><hr id="641b881a-e9f7-41d9-9361-c7c92582f6ae"/><h2 id="07e37c9f-a308-4bab-aa3d-b0a01e77119f" class="">Part 2: <strong>Microfacet Material</strong></h2><p id="092c4423-71a2-414e-84db-5708ec001c3c" class="">In this task, we implemented the Microfacet model that allows us to render isotropic rough conductors that only reflect.</p><p id="52928a45-2578-4e0a-89e3-d7bde8e5cc80" class="">We had to first implement the microfacet f function below:</p><figure id="9428bc37-36aa-4dd3-a522-f4da7bb65f74" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Screen_Shot_2023-03-23_at_2.34.49_PM.png"><img style="width:554px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Screen_Shot_2023-03-23_at_2.34.49_PM.png"/></a></figure><p id="e1ab4a8d-e04c-4521-a127-abbd97ac1cc4" class="">To implement this complicated equation in our code, we had several helper functions:</p><ol type="1" id="23503b74-cc31-4c4d-9226-e26241783b31" class="numbered-list" start="1"><li>We implemented the F(w_i) term (Fresnel term) using the equations below:<figure id="8cdf00b2-a9ca-4bde-a34c-a6feb66e56f0" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Screen_Shot_2023-03-23_at_2.37.08_PM.png"><img style="width:692px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Screen_Shot_2023-03-23_at_2.37.08_PM.png"/></a></figure></li></ol><ol type="1" id="d2434a02-7e38-4dfd-8b11-f7b4b90f5561" class="numbered-list" start="2"><li>The G(w_o, w_i) term (shadowing-masking term) was provided to us</li></ol><ol type="1" id="31782aae-6605-447f-abf8-e070bb2ec397" class="numbered-list" start="3"><li>We implemented the D(h) term (the normal distribution function) by adopting the Beckmann distribution. The formula for this is shown below:<figure id="17f12a0c-2344-42f6-b5ec-47d29fc0ec00" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Screen_Shot_2023-03-23_at_2.39.11_PM.png"><img style="width:394px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Screen_Shot_2023-03-23_at_2.39.11_PM.png"/></a></figure></li></ol><p id="8c7a20c7-d03e-4a5c-a9ea-d5a8263f482f" class="">
+</p><p id="e7b88c16-f3b7-4acb-afae-b9bd524a9a46" class="">After implementing the function for calculating the microfacet f, we implemented importance sampling to sample the microfacet BRDF according to the shape of the Beckmann NDF used to calculate the D(h) term in the equation for f.</p><h3 id="702ec788-6af3-4c3f-8ec7-76add90b575e" class="">Show a screenshot sequence of 4 images of scene `CBdragon_microfacet_au.dae&#x27; rendered with <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span><span>﻿</span></span> set to 0.005, 0.05, 0.25 and 0.5. The other settings should be at least 128 samples per pixel and 1 samples per light. The number of bounces should be at least 5. Describe the differences between different images. Note that, to change the <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span><span>﻿</span></span>, just open the .dae file and search for `microfacet`.</h3><p id="1ba4c44b-2ff9-4932-99d7-bdfc381038ab" class="">
+</p><div id="7be9389b-db86-40d0-bb0f-a7196e2f58a5" class="column-list"><div id="1f7bfd4b-7362-4f89-80e2-a127a9c1cace" style="width:50%" class="column"><figure id="722441bb-de92-4710-9f3b-b637d11f55e3" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_alpha_point005.png"><img style="width:480px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_alpha_point005.png"/></a><figcaption>alpha = 0.005</figcaption></figure></div><div id="bf99c8f2-7dd4-46bd-b8d8-8d3211bdc6ee" style="width:50%" class="column"><figure id="ab2e0ecb-da25-4740-857b-73bae2cf2f31" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_alpha_point05.png"><img style="width:480px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_alpha_point05.png"/></a><figcaption>alpha = 0.05</figcaption></figure></div></div><div id="a9114bdc-9599-4ca3-8e1e-660fe35062bd" class="column-list"><div id="3e7a0832-e675-40dc-9d5c-34a1395a3b4d" style="width:50%" class="column"><figure id="3aaa6a2b-f0de-49f3-8323-6717f631eeeb" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_alpha_point25.png"><img style="width:480px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_alpha_point25.png"/></a><figcaption>alpha = 0.25</figcaption></figure></div><div id="90fb5964-aa3f-4ec1-8ba0-8e72dc4b4ff2" style="width:50%" class="column"><figure id="221bdf96-01ac-4f31-80f2-256751f00b0e" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_alpha_point5.png"><img style="width:480px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_alpha_point5.png"/></a><figcaption>alpha = 0.5</figcaption></figure></div></div><p id="699ab207-1268-4624-9350-5e040f773586" class="">Alpha represents the roughness of the microsurface, and a smaller alpha value means that the macrosurface is smoother. When alpha is 0.005, the dragon is very glossy and shiny. When the alpha value increases to 0.05, the surface appears to be a bit more diffuse. When the alpha value is 0.05 or smaller, reflections can be clearly seen on the surface of the dragon. When the alpha value is 0.25 or 0.5, the dragon is much more diffuse and less glossy, and the reflections begin to disappear. Another difference in the renderings is that the renderings with an alpha value of 0.05 and 0.005 have more white specs than the renderings with an alpha value of 0.25 or 0.5. </p><h3 id="00334656-bb3f-4919-a566-8fd020eb4895" class=""><strong>Show two images of scene `CBbunny_microfacet_cu.dae` rendered using cosine hemisphere sampling (default) and your importance sampling. The sampling rate should be fixed at 64 samples per pixel and 1 samples per light. The number of bounces should be at least 5. Briefly discuss their difference.</strong></h3><div id="99841ee3-a5cd-49f8-a4f6-50da5a39d7b5" class="column-list"><div id="69378c61-915f-46f1-ab93-f2058788c4f8" style="width:50%" class="column"><figure id="8edfdc62-9402-4773-abe4-6ad2e3d87631" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/bunny_importance.png"><img style="width:480px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/bunny_importance.png"/></a><figcaption><strong>CBbunny_microfacet_cu.dae rendered with importance sampling</strong></figcaption></figure></div><div id="7b0b81c9-093b-4b31-af32-bb091ae861d9" style="width:50%" class="column"><figure id="8203aff1-5cb8-48de-8d46-d4d359ecc49d" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/bunny_cos.png"><img style="width:480px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/bunny_cos.png"/></a><figcaption><strong>CBbunny_microfacet_cu.dae rendered with cosine hemisphere sampling</strong></figcaption></figure></div></div><p id="71001c28-7586-4bb3-b19f-6bf8fc93f8d7" class="">From the images above, it is clear that importance sampling is much less noisy than the default cosine hemisphere sampling; there are far more white specs in the cosine hemisphere sampling render than in the importance sampling render. The importance sampling we wrote samples the microfacet BRDF according to the shape of the Beckmann NDF which is used to calculate the D(h) term in the equation for f. Sampling according to the shape of the Beckman NDF allows for faster convergence, which results in fewer white specs when using only 64 samples per pixel. The cosine hemisphere sampling is not able to converge with only 64 samples and therefore more noise is visible in the image.</p><figure id="c065fd00-2cc5-40b4-8e55-cbb282d285a6" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Screen_Shot_2023-03-23_at_2.46.29_AM.png"><img style="width:566px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Screen_Shot_2023-03-23_at_2.46.29_AM.png"/></a></figure><figure id="b6834b3c-c0e2-4e4e-b8f6-317d92cf4140" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Screen_Shot_2023-03-23_at_2.47.06_AM.png"><img style="width:484px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Screen_Shot_2023-03-23_at_2.47.06_AM.png"/></a></figure><h3 id="783a69be-9ce9-4a36-89ed-0e318ca1c2b2" class=""><strong>Show at least one image with some other conductor material, replacing `eta` and `k`. Note that you should look up values for real data rather than modifying them arbitrarily. Tell us what kind of material your parameters correspond to.</strong></h3><p id="c54bca70-8e6f-43f5-bd82-17f7ff0dc78b" class="">We first rendered the CBdragon using an <strong>aluminum</strong> microfacet material. For aluminum, the eta value was <code>&lt;1.3352, 1.0109, 0.68955&gt;</code> and the k value was <code>&lt;7.3398, 6.6157, 5.6471&gt;</code>. The output had a very shiny appearance, similar to what you would expect if you wrapped the dragon in a layer of aluminum foil. The dragon was rendered with 128 samples per pixel, 1 sample per light, and 5 bounces with an alpha value of 0.25.</p><figure id="5d148b67-92dc-4f1d-9cfe-d9887a137402" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_aluminum.png"><img style="width:480px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_aluminum.png"/></a><figcaption>Aluminum Dragon:                                                                                          eta = <code>&lt;1.3352, 1.0109, 0.68955&gt;</code>, k = <code>&lt;7.3398, 6.6157, 5.6471&gt;</code></figcaption></figure><p id="7d08ee09-6fc2-4144-a334-a4577c78b1b9" class="">We then rendered the CBdragon using an <strong>iron</strong> microfacet material. For aluminum, the eta value was <code>&lt;2.8851, 2.9500, 2.6500&gt;</code> and the k value was <code>&lt;3.0449, 2.9300, 2.8075&gt;</code>. The output had a darker and heavier appearance than the previous aluminum material. The dragon was rendered with 128 samples per pixel, 1 sample per light, and 5 bounces with an alpha value of 0.25.</p><p id="267b17cd-cc46-4619-b796-5f05645340af" class="">
+</p><figure id="d0c6b85a-56ec-45ae-8530-c08b4a64f70d" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_iron.png"><img style="width:480px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_iron.png"/></a><figcaption>Iron Dragon:                                                                                                     eta = &lt;2.8851, 2.9500, 2.6500&gt;, k = &lt;3.0449, 2.9300, 2.8075&gt;</figcaption></figure><p id="b69a3117-cfac-47b7-9260-4c6f66f72443" class="">
+</p><hr id="3f94a5d5-3ed0-43a1-9318-260386aa4e64"/><h2 id="60ea7114-fd36-474a-85e5-90239ac4cbb7" class=""><strong>Part 4. Depth of Field</strong></h2><p id="84898529-92c4-4b9f-9b89-d397ada6fbd8" class="">In this task, we worked on implementing the depth of field effect by simulating a thin lens. To accomplish this, we worked entirely on modifying the <code>generate_ray_for_thin_lens(…)</code> function in the file <code>camera_lens.cpp</code>. The steps to complete the task were as follows:</p><ol type="1" id="5ac3e2f2-3b6b-42af-a69b-3ac85a7a0a0e" class="numbered-list" start="1"><li>The first step was identical to Part 1 of Project 3-1, where we first transformed all of our image coordinates <code>(x, y)</code> into the camera space. </li></ol><ol type="1" id="7f77f435-b012-4aa6-88af-47f5c54776ad" class="numbered-list" start="2"><li>Then, we computed our <code>camera_ray</code> variable to compute the direction of the point to the center of the lens located at <code>(0, 0, 0)</code> , and using this we compute the value <code>t</code> at which the ray will intersect the plane of focus located at <code>-focalDistance</code> in the z-axis. </li></ol><ol type="1" id="0815da2e-ccfa-46a8-8a42-678937df30fd" class="numbered-list" start="3"><li>Using this <code>t</code> value, we simply trace our camera_ray to thus determine the focus point <code>pFocus</code> on the plane of focus.</li></ol><ol type="1" id="66985a6a-8358-4a35-ba2d-abfcb190afa2" class="numbered-list" start="4"><li>We then uniformly sample the thin lens using the formula:<figure id="bb10dc77-ae8c-4bc3-ab81-80be28e5f395" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>p</mi><mi>L</mi><mi>e</mi><mi>n</mi><mi>s</mi><mo>=</mo><mo stretchy="false">(</mo><mi>l</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>R</mi><mi>a</mi><mi>d</mi><mi>i</mi><mi>u</mi><mi>s</mi><mo>⋅</mo><msqrt><mrow><mi>r</mi><mi>n</mi><mi>d</mi><mi>R</mi></mrow></msqrt><mo>⋅</mo><mi>c</mi><mi>o</mi><mi>s</mi><mo stretchy="false">(</mo><mi>r</mi><mi>n</mi><mi>d</mi><mi>T</mi><mi>h</mi><mi>e</mi><mi>t</mi><mi>a</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>l</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>R</mi><mi>a</mi><mi>d</mi><mi>i</mi><mi>u</mi><mi>s</mi><mo>⋅</mo><msqrt><mrow><mi>r</mi><mi>n</mi><mi>d</mi><mi>R</mi></mrow></msqrt><mo>⋅</mo><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>r</mi><mi>n</mi><mi>d</mi><mi>T</mi><mi>h</mi><mi>e</mi><mi>t</mi><mi>a</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">pLens=(lensRadius⋅\sqrt{rndR}  ⋅cos(rndTheta), lensRadius⋅\sqrt{rndR}⋅sin(rndTheta),0) </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">p</span><span class="mord mathnormal">L</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">s</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">u</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.058904999999999985em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.981095em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span><span style="top:-2.941095em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.058904999999999985em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">cos</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">h</span><span class="mord mathnormal">e</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">s</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">u</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.058904999999999985em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.981095em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span><span style="top:-2.941095em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.058904999999999985em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">in</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">h</span><span class="mord mathnormal">e</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span></span></div></figure><p id="01e4ac99-7173-4bc0-8e0a-97e60c2b095f" class="">and then set the variable <code>pLens</code> in our code accordingly.</p></li></ol><ol type="1" id="f54c5a08-ecd4-48a2-8bfc-a90651f15040" class="numbered-list" start="5"><li>Now that we have computed both <code>pFocus</code> and <code>pLens</code>, we simply compute a new vector which we affectionately called <code>blue</code> in honor of the blue arrow on the diagram provided in the project spec, by subtracting the <code>pFocus - pLens</code>. We make sure to normalize this output in order to turn it into a unit vector.</li></ol><ol type="1" id="6093d729-940b-4bc1-b247-98fa291a8dd6" class="numbered-list" start="6"><li>Thereafter, we make sure that we convert all our vectors from the current camera space into the ultimate world space by simply multiplying each vector (both <code>blue</code> and <code>pLens</code>) by the camera-to-world matrix <code>c2w</code>.</li></ol><ol type="1" id="0d46e458-7899-4a86-8e6b-a7eeee46fe0a" class="numbered-list" start="7"><li>Finally, we define an output ray <code>r</code> originating from the point <code>pLens</code> on the thin-lens, and traveling in the direction computed in our <code>blue</code> vector towards the plane of focus. We set the <code>min_t</code> and <code>max_t</code> attributes of ray <code>r</code> to equal <code>this-&gt;nClip</code> and <code>this-&gt;fClip</code> respectively, and finally return ray r as our output.</li></ol><h3 id="341e6129-0c96-43a9-8b74-cba3d3254e93" class=""><strong>In a few sentences, explain the differences between a pinhole camera model and a thin-lens camera model.</strong></h3><p id="d0d4d450-afcd-483f-af2c-7c040172470d" class="">There a quite a few differences between a pinhole camera model and a thin-lens camera model. First and foremost regarding the setup, a pinhole camera model is literally just a very small hole through which light rays pass through to display a (flipped) image on the other end, and the entire aperature and light rays are assumed to converge to a singular point. However, a thin-lens camera model is more similar to a real-world camera and human eyesight, where there is a lens with a specific aperture through which light rays from the image passes through and converges. Regarding a visual comparison, this means that a pinhole camera model allows for images to be produced where every part of the image is in focus. However in a thin-lens camera, due to the physical attributes of the lens such as aperture, only certain objects at a specific “focal distance” will appear in focus, while the rest of the image will appear blurry and out of focus.</p><figure id="ed4f50e9-9ce7-4547-ae48-be571dc57c56" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Untitled.png"><img style="width:611px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/Untitled.png"/></a><figcaption>image credit: CS184 Project 3-2, Part 4</figcaption></figure><p id="83f6cb68-63de-4196-bf74-d1c2302f3ffc" class="">For a visual depiction of what a pinhole camera vs. a thin-lens camera model might look like, we can observe the diagram above. In essence, the red ray that directly passes through the lens without any refraction depicts how a pinhole camera model would act, while the yellow and blue rays that refract through the lens depicts how a thin-lens camera model would act.</p><h3 id="5d38d9d0-9c50-46ea-ae6a-445721747dea" class=""><strong>Show a &quot;focus stack&quot; where you focus at 4 visibly different depths through a scene. Make sure to include all screenshots.</strong></h3><p id="bec2b25a-6fa8-4c9d-b8de-4831598c4493" class="">Looking at the images below, we tested out various focal distances across 4.5, 4.7, 4.9 and 5.1 to be rendered on a scene of a shiny dragon (created using a custom dae file). As the focal distance increases, we can visually see that the region of focus traverses from the front of the dragon towards the rear end. NOTE: All images below utilized a consistent lens radius of 0.23.</p><figure id="d8a7e5fd-c01f-4338-80b5-99360852b28c" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.23_-d_4.5.png"><img style="width:960px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.23_-d_4.5.png"/></a><figcaption>focal distance initially set to 4.5</figcaption></figure><figure id="3421337b-e057-4ff1-a565-497ff581df5b" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.23_-d_4.7.png"><img style="width:960px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.23_-d_4.7.png"/></a><figcaption>focal distance increased to 4.7</figcaption></figure><figure id="fa40eaf8-96b4-415d-afda-bada4fdf71d4" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.23_-d_4.9.png"><img style="width:960px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.23_-d_4.9.png"/></a><figcaption>focal distance increased to 4.9</figcaption></figure><figure id="619202f3-4814-4d55-a41a-4e665ca92078" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.23_-d_5.1.png"><img style="width:960px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.23_-d_5.1.png"/></a><figcaption>focal distance increased to 5.1</figcaption></figure><h3 id="bdca8b95-8f38-4d30-9188-e4cb615b7c68" class=""><strong>Show a sequence of 4 pictures with visibly different aperture sizes, all focused at the same point in a scene. Make sure to include all screenshots.</strong></h3><p id="346a87c7-b5fa-4428-9d7f-f0a8abd74259" class="">Looking at the images below, we tested out various aperture sizes by changing the lens radius across the values 0.03, 0.13, 0.23, and 0.33, all being rendered on a scene of a shiny dragon (created using a custom dae file). As the aperture decreases towards 0, we can visually see that more and more of the image starts to come into focus. This makes sense, as a lens with radius 0 essentially just acts like our original pinhole camera model, which should result in the entire image being in focus rather than specific focal distances. NOTE: All images below utilized a consistent focal distance value of 4.5</p><figure id="5939ac4a-729a-4df5-b6d9-1d1a7c2a2327" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.33_-d_4.5.png"><img style="width:960px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.33_-d_4.5.png"/></a><figcaption>lens radius initially set to 0.33</figcaption></figure><figure id="feb7952d-a21c-4857-b1e5-eee6fc29e59a" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.23_-d_4.5%201.png"><img style="width:960px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.23_-d_4.5%201.png"/></a><figcaption>lens radius decreased to 0.23</figcaption></figure><figure id="dfe51a5f-1d6d-4082-8fc6-904d51a2f4ad" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.13_-d_4.5.png"><img style="width:960px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.13_-d_4.5.png"/></a><figcaption>lens radius decreased to 0.13</figcaption></figure><figure id="5f52c8f8-541a-4847-a119-6ccd1451e504" class="image"><a href="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.03_-d_4.5.png"><img style="width:960px" src="Project%203-2%20Adding%20Additional%20Features%20to%20Our%20Path%209b65f195d9424a92969979ea9e20a05d/dragon_-b_0.03_-d_4.5.png"/></a><figcaption>lens radius decreased to 0.03</figcaption></figure><p id="73c46998-3544-4c61-a76e-81bb0bf01967" class="">
+</p><hr id="ff0bf7a3-9498-4a5e-8fed-6c40b869a310"/><h1 id="a4d56b9f-479a-42c0-a238-a84d77e82ec9" class="">Conclusion</h1><p id="d681f996-c7c2-4701-85aa-1ed9018199b1" class="">Overall, this was one of the most fun projects we have worked on at Berkeley. The scenes we rendered were beautiful, especially the dragon and bunny across various appearances. It was also really cool to see how we modified the lens radius and focal distance to simulate the effect of a camera lens.  Even though some renders took quite a while to run, the wait was genuinely worth it! We worked together on this project using a pair-programming approach, both in-person and online over Zoom.</p><h1 id="a85811bc-6ab8-465f-8576-a4875ea2f0f9" class="">Link to Website</h1><p id="0785c5be-41ac-45ca-b4ac-07de5964f1ca" class=""><a href="https://pranav-sukumar.github.io/BerkeleyComputerGraphicsClassPortfolio/proj3-2/index.html">https://pranav-sukumar.github.io/BerkeleyComputerGraphicsClassPortfolio/proj3-2/index.html</a> </p><p id="435ac989-fc53-4340-9115-669db66b8b85" class="">
+</p></div></article></body></html>
